@@ -33,7 +33,3 @@ def show(path_obj):
     for f in files:
         i += 1
         print(f"{i}. {f}")
-
-if __name__ == '__main__':
-    path = Path_Object("D:/Anime")
-    show(path)
