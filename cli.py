@@ -9,40 +9,54 @@ def display(path, files, folders):
 
     for dir in folders:
         i += 1
-        print(f"{i}.>>>{dir}")
+        print(f"{i}. {dir}/")
 
     for f in files:
         i += 1
-        print(f"{i}.{f.name} {f.type} {f.size}")
+        print(f"{i}. {f.name} {f.type} {f.size}")
 
 
 def execute(path):
     try:
+        print("Opening file...")
         os.startfile(path)
     except:
-        return -1
+        print("Cannot execute file.")
+
+
+
+def refresh_list(path, files, folders, fcount, dircount):
+    files, folders = get_files_folders(path)
+    fcount = len(files)
+    dircount = len(folders)
+    os.system('cls')
+    display(path, files, folders)
+    print("")
+    return files, folders, fcount, dircount
 
 
 def main():
     path = PathObject("D:")
     files, folders = get_files_folders(path)
+    fcount = len(files)
+    dircount = len(folders)
+    os.system('cls')
+    display(path, files, folders)
+    print("")
 
     while 1:
-        os.system('cls')
-        fcount = len(files)
-        dircount = len(folders)
-        display(path, files, folders)
-
-        com = input("Command: ")
+        com = input("command: ")
         if (com == "back"):
             path.pop()
-            files, folders = get_files_folders(path)
+            files, folders, fcount, dircount = \
+            refresh_list(path, files, folders, fcount, dircount)
         else:
             if com.isnumeric() and int(com) <= dircount:
                 i = int(com) - 1
                 dir = folders[i]
                 path.push(dir)
-                files, folders = get_files_folders(path)
+                files, folders, fcount, dircount = \
+                refresh_list(path, files, folders, fcount, dircount)
             elif int(com) <= dircount + fcount:
                 i = int(com) - dircount - 1
                 file = files[i]

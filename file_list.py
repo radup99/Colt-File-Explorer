@@ -19,13 +19,14 @@ filetype = {
     "jpg": "Image",
     "png": "Image",
     "gif": "Image",
+    "exe": "Executable"
 
 }
 
 def determine_type(file_name):
 
     try:
-        extension = str(filename).rsplit('.', 1)[1]
+        extension = str(file_name).rsplit('.', 1)[1]
         type = filetype.get(extension, "File")
         return type
     except:
