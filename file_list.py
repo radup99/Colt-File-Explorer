@@ -20,7 +20,6 @@ filetype = {
     "png": "Image",
     "gif": "Image",
     "exe": "Executable"
-
 }
 
 def determine_type(file_name):
