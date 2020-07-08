@@ -1,4 +1,4 @@
-class Path_Object:
+class PathObject:
     def __init__(self, path):
         self.pathtext = path
 
@@ -7,7 +7,7 @@ class Path_Object:
 
     def push(self, dir):
         self.pathtext += '/'
-        self.pathtext += dir
+        self.pathtext += str(dir)
 
     def pop(self):
         if "/" not in self.pathtext:

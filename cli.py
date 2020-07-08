@@ -1,5 +1,5 @@
 import os
-from path import Path_Object
+from path import PathObject
 from file_list import get_files_folders
 
 
@@ -9,15 +9,22 @@ def display(path, files, folders):
 
     for dir in folders:
         i += 1
-        print(f"{i}.{dir}")
+        print(f"{i}.>>>{dir}")
 
     for f in files:
         i += 1
-        print(f)
+        print(f"{i}.{f.name} {f.type} {f.size}")
+
+
+def execute(path):
+    try:
+        os.startfile(path)
+    except:
+        return -1
 
 
 def main():
-    path = Path_Object("D:")
+    path = PathObject("D:")
     files, folders = get_files_folders(path)
 
     while 1:
@@ -36,6 +43,10 @@ def main():
                 dir = folders[i]
                 path.push(dir)
                 files, folders = get_files_folders(path)
+            elif int(com) <= dircount + fcount:
+                i = int(com) - dircount - 1
+                file = files[i]
+                execute(str(path) + '/' + file.name)
 
 
 if __name__ == '__main__':
