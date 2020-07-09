@@ -1,3 +1,5 @@
+# Object representation of files
+
 class FileObject:
 
     def __init__(self, name, size, type):
