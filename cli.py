@@ -1,5 +1,5 @@
 import os
-from path import PathObject
+from PathObject import PathObject
 from file_list import get_files_folders
 
 

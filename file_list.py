@@ -1,6 +1,6 @@
 import os
-from path import PathObject
-from file import FileObject
+from PathObject import PathObject
+from FileObject import FileObject
 
 filetype = {
     "txt": "Text",
