@@ -28,7 +28,6 @@ filetype = {
 
 # determines a file's type, based on its extension
 def determine_type(file_name):
-
     try:
         extension = str(file_name).rsplit('.', 1)[1]
         type = filetype.get(extension, "File")
@@ -37,10 +36,11 @@ def determine_type(file_name):
         return "File"
 
 
-# creates two FileObject lists, containing all the files and folders
-# found in the path given as argument
+# creates two FileObject lists, containing all the files and
+# folders found in the path given as argument
 def get_files_folders(path):
 
+    # lists for storing files and folders as FileObjects
     files = []
     folders = []
 
