@@ -39,19 +39,18 @@ def determine_type(file_name):
 
 # creates two FileObject lists, containing all the files and folders
 # found in the path given as argument
-def get_files_folders(path_obj):
+def get_files_folders(path):
 
     files = []
     folders = []
-    path = str(path_obj) + "/"
 
     # inserts all file and folder names (strings) found in the path into file_names
-    file_names = os.listdir(str(path))
+    file_names = os.listdir(str(path) + "/")
     folder_names = []
 
     # find all folders from file_names and copy them to folder_names
     for f in file_names:
-        if os.path.isdir(str(path) + f):
+        if os.path.isdir(str(path) + "/" + f):
             folder_names.append(f)
 
     # removes folders from file_names and creates a FileObject for each folder
@@ -62,7 +61,7 @@ def get_files_folders(path_obj):
 
     # creates a FileObject for each file
     for f in file_names:
-        size = os.stat(str(path) + f).st_size
+        size = os.stat(str(path) + "/" + f).st_size
         type = determine_type(f)
         file_obj = FileObject(f, size, type)
         files.append(file_obj)
