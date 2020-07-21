@@ -22,6 +22,15 @@ def execute(path):
         print("Cannot execute file.")
 
 
+def is_accesible(path, dir):
+    path.push(dir)
+    if not os.access(str(path), os.R_OK):
+        print("Cannot access folder.")
+        path.pop()
+        return False
+    return True
+
+
 def refresh_list(path, files, folders, fcount, dircount):
     files, folders = get_files_folders(path)
     fcount = len(files)
@@ -53,9 +62,9 @@ def main():
                 if i <= dircount:
                     i -= 1
                     dir = folders[i]
-                    path.push(dir)
-                    files, folders, fcount, dircount = \
-                    refresh_list(path, files, folders, fcount, dircount)
+                    if is_accesible(path, dir):
+                        files, folders, fcount, dircount = \
+                        refresh_list(path, files, folders, fcount, dircount)
                 elif i <= dircount + fcount:
                     i = i - dircount - 1
                     file = files[i]
