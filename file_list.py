@@ -39,7 +39,6 @@ def determine_type(file_name):
 # creates two FileObject lists, containing all the files and
 # folders found in the path given as argument
 def get_files_folders(path):
-
     # lists for storing files and folders as FileObjects
     files = []
     folders = []
