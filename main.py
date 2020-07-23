@@ -6,6 +6,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     win = MainWindow("D:")
+    win.setWindowTitle("Colt File Manager")
     win.show_file_list()
     win.show()
     sys.exit(app.exec_())
