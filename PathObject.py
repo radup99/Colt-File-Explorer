@@ -14,4 +14,11 @@ class PathObject:
     def back(self):  # removes the current folder from the end of the path
         if "/" not in self.pathtext:
             return
+        dir = self.pathtext.rsplit('/', 1)[1]
         self.pathtext = self.pathtext.rsplit('/', 1)[0]
+        return dir
+
+    def is_root(self):
+        if "/" not in self.pathtext:
+            return True
+        return False

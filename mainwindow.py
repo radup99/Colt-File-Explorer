@@ -18,6 +18,7 @@ class MainWindow(QMainWindow):
         self.folders = []
         self.file_count = 0
         self.dir_count = 0
+        self.dir_stack = []
 
         self.ui.setupUi(self)
         self.connect()
@@ -25,6 +26,7 @@ class MainWindow(QMainWindow):
 
     def connect(self):
         self.ui.backBtn.clicked.connect(self.back)
+        self.ui.fwdBtn.clicked.connect(self.forward)
         self.ui.pathBar.returnPressed.connect(self.update_path)
         self.ui.fileTable.doubleClicked.connect(self.open_item)
 
@@ -94,6 +96,8 @@ class MainWindow(QMainWindow):
             self.open_file(name)
 
     def open_folder(self, dir):
+        if self.path.is_root():
+            self.dir_stack.clear()
         self.path.add(dir)
         self.show_file_list()
 
@@ -103,7 +107,18 @@ class MainWindow(QMainWindow):
         os.startfile(str(path))
 
     def back(self):
-        self.path.back()
+        if self.path.is_root():
+            return
+        dir = self.path.back()
+        self.dir_stack.append(dir)
+        self.show_file_list()
+
+    def forward(self):
+        if len(self.dir_stack) == 0:
+            return
+        dir = self.dir_stack[-1]
+        self.dir_stack.pop()
+        self.path.add(dir)
         self.show_file_list()
 
     def path_error_popup(self):
