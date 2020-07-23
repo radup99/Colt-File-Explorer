@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
+from decimal import *
 import os
 
 from browser_ui import Ui_MainWindow
@@ -58,10 +59,25 @@ class MainWindow(QMainWindow):
 
         for f in self.files:
             row = self.ui.fileTable.rowCount()
+            size = self.format_size(f.size)
             self.ui.fileTable.insertRow(row)
             self.ui.fileTable.setItem(row, 0, QtWidgets.QTableWidgetItem(f.name))
             self.ui.fileTable.setItem(row, 1, QtWidgets.QTableWidgetItem(f.type))
-            self.ui.fileTable.setItem(row, 2, QtWidgets.QTableWidgetItem(str(f.size)))
+            self.ui.fileTable.setItem(row, 2, QtWidgets.QTableWidgetItem(size))
+
+    def format_size(self, size):
+        if size < 999:
+            return f"{size} B"
+        if size < 999999:
+            num = Decimal(size / 1000)
+            return f"{round(num, 2)} KB"
+        if size < 999999999:
+            num = Decimal(size / 1000000)
+            return f"{round(num, 2)} MB"
+        if size < 999999999999:
+            num = Decimal(size / 1000000000)
+            return f"{round(num, 2)} GB"
+        return str(size)
 
     def update_counts(self):
         self.file_count = len(self.files)
