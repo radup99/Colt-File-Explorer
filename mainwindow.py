@@ -1,23 +1,27 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
-from browser_ui import Ui_MainWindow
+import os
 
+from browser_ui import Ui_MainWindow
 from PathObject import PathObject
 from file_list import get_files_folders
-
-import os
 
 
 class MainWindow(QMainWindow):
     def __init__(self, path_text):
         super().__init__()
+
         self.ui = Ui_MainWindow()
+        self.path = PathObject(path_text)
+        self.files = []
+        self.folders = []
+
         self.ui.setupUi(self)
         self.connect()
-        self.path = PathObject(path_text)
-        self.ui.pathBar.setText(str(self.path))
+        self.show_file_list()
 
     def connect(self):
+        self.ui.backBtn.clicked.connect(self.back)
         self.ui.pathBar.returnPressed.connect(self.update_path)
         self.ui.fileTable.doubleClicked.connect(self.open_folder)
 
@@ -38,18 +42,18 @@ class MainWindow(QMainWindow):
         x = msg.exec_()
 
     def show_file_list(self):
-        files, folders = get_files_folders(self.path)
+        self.files, self.folders = get_files_folders(self.path)
 
         self.ui.pathBar.setText(str(self.path))
         self.ui.fileTable.setRowCount(0)
 
-        for dir in folders:
+        for dir in self.folders:
             row = self.ui.fileTable.rowCount()
             self.ui.fileTable.insertRow(row)
             self.ui.fileTable.setItem(row, 0, QtWidgets.QTableWidgetItem(dir.name))
             self.ui.fileTable.setItem(row, 1, QtWidgets.QTableWidgetItem("Folder"))
 
-        for f in files:
+        for f in self.files:
             row = self.ui.fileTable.rowCount()
             self.ui.fileTable.insertRow(row)
             self.ui.fileTable.setItem(row, 0, QtWidgets.QTableWidgetItem(f.name))
@@ -58,8 +62,19 @@ class MainWindow(QMainWindow):
 
     def open_folder(self, item):
         dir = item.data()
-        self.path.push(dir)
+        self.path.add(dir)
         self.show_file_list()
+
+    def back(self):
+        self.path.back()
+        self.show_file_list()
+
+    def path_error_popup(self):
+        msg = QMessageBox()
+        msg.setWindowTitle("Error")
+        msg.setText("Invalid path!")
+        msg.setIcon(QMessageBox.Critical)
+        msg.exec_()
 
     '''
     def show_file_list(self):
