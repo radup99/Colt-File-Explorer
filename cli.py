@@ -23,10 +23,10 @@ def execute(path):
 
 
 def is_accesible(path, dir):
-    path.push(dir)
+    path.add(dir)
     if not os.access(str(path), os.R_OK):
         print("Cannot access folder.")
-        path.pop()
+        path.back()
         return False
     return True
 
