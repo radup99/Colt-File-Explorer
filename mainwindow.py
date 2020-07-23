@@ -74,10 +74,9 @@ class MainWindow(QMainWindow):
         if size < 999999999:
             num = Decimal(size / 1000000)
             return f"{round(num, 2)} MB"
-        if size < 999999999999:
+        else:
             num = Decimal(size / 1000000000)
             return f"{round(num, 2)} GB"
-        return str(size)
 
     def update_counts(self):
         self.file_count = len(self.files)
