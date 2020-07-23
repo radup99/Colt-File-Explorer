@@ -15,6 +15,8 @@ class MainWindow(QMainWindow):
         self.path = PathObject(path_text)
         self.files = []
         self.folders = []
+        self.file_count = 0
+        self.dir_count = 0
 
         self.ui.setupUi(self)
         self.connect()
@@ -23,7 +25,7 @@ class MainWindow(QMainWindow):
     def connect(self):
         self.ui.backBtn.clicked.connect(self.back)
         self.ui.pathBar.returnPressed.connect(self.update_path)
-        self.ui.fileTable.doubleClicked.connect(self.open_folder)
+        self.ui.fileTable.doubleClicked.connect(self.open_item)
 
     def update_path(self):
         path_text = self.ui.pathBar.text()
@@ -43,6 +45,7 @@ class MainWindow(QMainWindow):
 
     def show_file_list(self):
         self.files, self.folders = get_files_folders(self.path)
+        self.update_counts()
 
         self.ui.pathBar.setText(str(self.path))
         self.ui.fileTable.setRowCount(0)
@@ -60,10 +63,29 @@ class MainWindow(QMainWindow):
             self.ui.fileTable.setItem(row, 1, QtWidgets.QTableWidgetItem(f.type))
             self.ui.fileTable.setItem(row, 2, QtWidgets.QTableWidgetItem(str(f.size)))
 
-    def open_folder(self, item):
-        dir = item.data()
+    def update_counts(self):
+        self.file_count = len(self.files)
+        self.dir_count = len(self.folders)
+
+    def open_item(self, item):
+        if item.column() != 0:
+            return
+        name = item.data()
+        # self.path.add(name)
+        # self.show_file_list()
+        if item.row() < self.dir_count:
+            self.open_folder(name)
+        else:
+            self.open_file(name)
+
+    def open_folder(self, dir):
         self.path.add(dir)
         self.show_file_list()
+
+    def open_file(self, file):
+        path = PathObject(str(self.path))
+        path.add(file)
+        os.startfile(str(path))
 
     def back(self):
         self.path.back()
@@ -75,14 +97,3 @@ class MainWindow(QMainWindow):
         msg.setText("Invalid path!")
         msg.setIcon(QMessageBox.Critical)
         msg.exec_()
-
-    '''
-    def show_file_list(self):
-        files, folders = get_files_folders(self.path)
-
-        for dir in folders:
-            print(dir.name)
-
-        for f in files:
-            print(f.name, f.type, f.size)
-    '''
