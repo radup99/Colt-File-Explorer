@@ -47,6 +47,14 @@ def get_files_folders(path):
     file_names = os.listdir(str(path) + "/")
     folder_names = []
 
+    # removes some unwanted folders
+    try:
+        file_names.remove("System Volume Information")
+        file_names.remove("$RECYCLE.BIN")
+        file_names.remove("found.000")
+    except:
+        pass
+
     # find all folders from file_names and copy them to folder_names
     for f in file_names:
         if os.path.isdir(str(path) + "/" + f):
