@@ -1,13 +1,15 @@
 # This class manages the browser's current path
 class PathObject:
 
-    def __init__(self, path):
-        self.pathtext = path
+    def __init__(self, text):
+        text = text.replace('\\', '/')
+        self.pathtext = text
 
     def __str__(self):
         return self.pathtext
 
     def set(self, text):
+        text = text.replace('\\', '/')
         self.pathtext = text
 
     def add(self, dir):  # adds a folder's name to the end of the path
