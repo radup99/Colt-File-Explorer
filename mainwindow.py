@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QMainWindow, QMessageBox
+from PyQt5.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem
 from decimal import *
 import os
 
@@ -33,7 +33,8 @@ class MainWindow(QMainWindow):
     def update_path(self):
         path_text = self.ui.pathBar.text()
         if os.path.isdir(path_text):
-            self.path.pathtext = path_text
+            self.dir_stack.clear()
+            self.path.set(path_text)
             self.show_file_list()
         else:
             self.path_error_popup()
@@ -56,16 +57,16 @@ class MainWindow(QMainWindow):
         for dir in self.folders:
             row = self.ui.fileTable.rowCount()
             self.ui.fileTable.insertRow(row)
-            self.ui.fileTable.setItem(row, 0, QtWidgets.QTableWidgetItem(dir.name))
-            self.ui.fileTable.setItem(row, 1, QtWidgets.QTableWidgetItem("Folder"))
+            self.ui.fileTable.setItem(row, 0, QTableWidgetItem(dir.name))
+            self.ui.fileTable.setItem(row, 1, QTableWidgetItem("Folder"))
 
         for f in self.files:
             row = self.ui.fileTable.rowCount()
             size = self.format_size(f.size)
             self.ui.fileTable.insertRow(row)
-            self.ui.fileTable.setItem(row, 0, QtWidgets.QTableWidgetItem(f.name))
-            self.ui.fileTable.setItem(row, 1, QtWidgets.QTableWidgetItem(f.type))
-            self.ui.fileTable.setItem(row, 2, QtWidgets.QTableWidgetItem(size))
+            self.ui.fileTable.setItem(row, 0, QTableWidgetItem(f.name))
+            self.ui.fileTable.setItem(row, 1, QTableWidgetItem(f.type))
+            self.ui.fileTable.setItem(row, 2, QTableWidgetItem(size))
 
     def format_size(self, size):
         if size < 999:
@@ -88,8 +89,7 @@ class MainWindow(QMainWindow):
         if item.column() != 0:
             return
         name = item.data()
-        # self.path.add(name)
-        # self.show_file_list()
+        self.dir_stack.clear()
         if item.row() < self.dir_count:
             self.open_folder(name)
         else:

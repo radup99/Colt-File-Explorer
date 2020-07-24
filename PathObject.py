@@ -7,6 +7,9 @@ class PathObject:
     def __str__(self):
         return self.pathtext
 
+    def set(self, text):
+        self.pathtext = text
+
     def add(self, dir):  # adds a folder's name to the end of the path
         self.pathtext += '/'
         self.pathtext += str(dir)
