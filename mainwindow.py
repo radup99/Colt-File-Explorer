@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem
+from PyQt5.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem, QStatusBar
 from decimal import *
 import os
 
@@ -13,6 +13,7 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         self.ui = Ui_MainWindow()
+        self.status_bar = QStatusBar()
         self.path = PathObject(path_text)
         self.files = []
         self.folders = []
@@ -22,6 +23,7 @@ class MainWindow(QMainWindow):
 
         self.ui.setupUi(self)
         self.connect()
+        self.setStatusBar(self.status_bar)
         self.show_file_list()
 
     def connect(self):
@@ -67,6 +69,10 @@ class MainWindow(QMainWindow):
             self.ui.fileTable.setItem(row, 0, QTableWidgetItem(f.name))
             self.ui.fileTable.setItem(row, 1, QTableWidgetItem(f.type))
             self.ui.fileTable.setItem(row, 2, QTableWidgetItem(size))
+
+        count = self.file_count + self.dir_count
+        count_text = f"{count} items ({self.dir_count} folders, {self.file_count} files)"
+        self.status_bar.showMessage(count_text)
 
     def format_size(self, size):
         if size < 999:
