@@ -32,12 +32,12 @@
           </property>
           <property name="maximumSize">
            <size>
-            <width>30</width>
+            <width>20</width>
             <height>20</height>
            </size>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: rgb(221, 221, 221);</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>&lt;</string>
@@ -54,12 +54,12 @@
           </property>
           <property name="maximumSize">
            <size>
-            <width>30</width>
+            <width>20</width>
             <height>20</height>
            </size>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: rgb(221, 221, 221);</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>&gt;</string>

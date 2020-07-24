@@ -4,8 +4,8 @@ from decimal import *
 import os
 
 from browser_ui import Ui_MainWindow
-from PathObject import PathObject
 from file_list import get_files_folders
+from PathObject import PathObject
 
 
 class MainWindow(QMainWindow):
