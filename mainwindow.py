@@ -70,9 +70,7 @@ class MainWindow(QMainWindow):
             self.ui.fileTable.setItem(row, 1, QTableWidgetItem(f.type))
             self.ui.fileTable.setItem(row, 2, QTableWidgetItem(size))
 
-        count = self.file_count + self.dir_count
-        count_text = f"{count} items ({self.dir_count} folders, {self.file_count} files)"
-        self.status_bar.showMessage(count_text)
+        self.show_count()
 
     def format_size(self, size):
         if size < 999:
@@ -133,3 +131,24 @@ class MainWindow(QMainWindow):
         msg.setText("Invalid path!")
         msg.setIcon(QMessageBox.Critical)
         msg.exec_()
+
+    def show_count(self):
+        count_text = ""
+        count = self.file_count + self.dir_count
+
+        if count == 1:
+            count_text += "1 item ("
+        else:
+            count_text += f"{count} items ("
+
+        if self.dir_count == 1:
+            count_text += "1 folder, "
+        else:
+            count_text += f"{self.dir_count} folders, "
+
+        if self.file_count == 1:
+            count_text += "1 file)"
+        else:
+            count_text += f"{self.file_count} files)"
+
+        self.status_bar.showMessage(count_text)
