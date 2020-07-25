@@ -6,6 +6,7 @@ import os
 from browser_ui import Ui_MainWindow
 from file_list import get_files_folders
 from PathObject import PathObject
+from filewidget import FileWidget
 
 
 class MainWindow(QMainWindow):
@@ -15,10 +16,13 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.status_bar = QStatusBar()
         self.path = PathObject(path_text)
+
         self.files = []
-        self.folders = []
         self.file_count = 0
+
+        self.folders = []
         self.dir_count = 0
+
         self.dir_stack = []
 
         self.ui.setupUi(self)
@@ -30,7 +34,7 @@ class MainWindow(QMainWindow):
         self.ui.backBtn.clicked.connect(self.back)
         self.ui.fwdBtn.clicked.connect(self.forward)
         self.ui.pathBar.returnPressed.connect(self.update_path)
-        self.ui.fileTable.doubleClicked.connect(self.open_item)
+        self.ui.fileTable.cellDoubleClicked.connect(self.open_item)
 
     def update_path(self):
         path_text = self.ui.pathBar.text()
@@ -59,17 +63,21 @@ class MainWindow(QMainWindow):
         for dir in self.folders:
             row = self.ui.fileTable.rowCount()
             self.ui.fileTable.insertRow(row)
-            self.ui.fileTable.setItem(row, 0, QTableWidgetItem(dir.name))
+            fwidget = FileWidget(dir.name, dir.type)
+            self.ui.fileTable.setCellWidget(row, 0, fwidget)
             self.ui.fileTable.setItem(row, 1, QTableWidgetItem("Folder"))
 
         for f in self.files:
             row = self.ui.fileTable.rowCount()
             size = self.format_size(f.size)
             self.ui.fileTable.insertRow(row)
-            self.ui.fileTable.setItem(row, 0, QTableWidgetItem(f.name))
+            fwidget = FileWidget(f.name, f.type)
+            self.ui.fileTable.setCellWidget(row, 0, fwidget)
             self.ui.fileTable.setItem(row, 1, QTableWidgetItem(f.type))
             self.ui.fileTable.setItem(row, 2, QTableWidgetItem(size))
 
+        self.ui.fileTable.resizeColumnsToContents()
+        self.ui.fileTable.resizeRowsToContents()
         self.show_count()
 
     def format_size(self, size):
@@ -89,12 +97,13 @@ class MainWindow(QMainWindow):
         self.file_count = len(self.files)
         self.dir_count = len(self.folders)
 
-    def open_item(self, item):
-        if item.column() != 0:
+    def open_item(self, row, column):
+        if column != 0:
             return
-        name = item.data()
+        widg = self.ui.fileTable.cellWidget(row, column)
+        name = widg.get_text()
         self.dir_stack.clear()
-        if item.row() < self.dir_count:
+        if row < self.dir_count:
             self.open_folder(name)
         else:
             self.open_file(name)
