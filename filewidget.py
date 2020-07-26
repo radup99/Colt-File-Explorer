@@ -24,8 +24,6 @@ class FileWidget(QWidget):
         self.layout().setWidget(0, QtWidgets.QFormLayout.FieldRole, self.fileName)
 
         self.set_icon()
-        # self.icon.setPixmap(QtGui.QPixmap("folder.png"))
-        # self.icon.setScaledContents(True)
 
         self.fileName.setText(text)
 
