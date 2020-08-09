@@ -38,14 +38,14 @@ def determine_type(file_name):
 
 # creates two FileObject lists, containing all the files and
 # folders found in the path given as argument
-def get_files_folders(path):
+def get_files_dirs(path):
     # lists for storing files and folders as FileObjects
     files = []
-    folders = []
+    dirs = []
 
     # inserts all file and folder names (strings) found in the path into file_names
     file_names = os.listdir(str(path) + "/")
-    folder_names = []
+    dir_names = []
 
     # removes some unwanted folders
     try:
@@ -58,13 +58,13 @@ def get_files_folders(path):
     # find all folders from file_names and copy them to folder_names
     for f in file_names:
         if os.path.isdir(str(path) + "/" + f):
-            folder_names.append(f)
+            dir_names.append(f)
 
     # removes folders from file_names and creates a FileObject for each folder
-    for dir in folder_names:
+    for dir in dir_names:
         file_names.remove(dir)
         dir_obj = FileObject(dir, 0, "Folder")
-        folders.append(dir_obj)
+        dirs.append(dir_obj)
 
     # creates a FileObject for each file
     for f in file_names:
@@ -73,4 +73,4 @@ def get_files_folders(path):
         file_obj = FileObject(f, size, type)
         files.append(file_obj)
 
-    return files, folders
+    return files, dirs

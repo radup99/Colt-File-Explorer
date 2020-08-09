@@ -4,7 +4,7 @@ from decimal import *
 import os
 
 from browser_ui import Ui_MainWindow
-from file_list import get_files_folders
+from file_list import get_files_dirs
 from PathObject import PathObject
 from filewidget import FileWidget
 
@@ -20,7 +20,7 @@ class MainWindow(QMainWindow):
         self.files = []
         self.file_count = 0
 
-        self.folders = []
+        self.dirs = []
         self.dir_count = 0
 
         self.dir_stack = []
@@ -54,13 +54,13 @@ class MainWindow(QMainWindow):
         x = msg.exec_()
 
     def show_file_list(self):
-        self.files, self.folders = get_files_folders(self.path)
+        self.files, self.dirs = get_files_dirs(self.path)
         self.update_counts()
 
         self.ui.pathBar.setText(str(self.path))
         self.ui.fileTable.setRowCount(0)
 
-        for dir in self.folders:
+        for dir in self.dirs:
             row = self.ui.fileTable.rowCount()
             self.ui.fileTable.insertRow(row)
             fwidget = FileWidget(dir.name, dir.type)
@@ -95,7 +95,7 @@ class MainWindow(QMainWindow):
 
     def update_counts(self):
         self.file_count = len(self.files)
-        self.dir_count = len(self.folders)
+        self.dir_count = len(self.dirs)
 
     def open_item(self, row, column):
         if column != 0:
@@ -153,7 +153,7 @@ class MainWindow(QMainWindow):
         if self.dir_count == 1:
             count_text += "1 folder, "
         else:
-            count_text += f"{self.dir_count} folders, "
+            count_text += f"{self.dir_count} dirs, "
 
         if self.file_count == 1:
             count_text += "1 file)"
