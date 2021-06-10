@@ -165,7 +165,7 @@ class MainWindow(QMainWindow):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    win = MainWindow("D:")
+    win = MainWindow("C:")
     win.setWindowTitle("Colt File Manager")
     win.show_file_list()
     win.show()
